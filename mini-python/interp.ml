@@ -1,4 +1,3 @@
-
 open Ast
 open Format
 
@@ -60,6 +59,46 @@ let is_false (v: value) =
 
 let is_true (v: value) = not (is_false v)
 
+(* compare_value *)
+
+let rec compare_value v1 v2 =
+  match v1, v2 with
+  | Vnone, Vnone -> 0
+  | Vbool b1, Vbool b2 ->
+      compare b1 b2
+  | Vint n1, Vint n2 ->
+      compare n1 n2
+  | Vstring s1, Vstring s2 ->
+      compare s1 s2
+  | Vlist a1, Vlist a2 ->
+      let len1 = Array.length a1 in
+      let len2 = Array.length a2 in
+      let rec compare_elements i =
+        if i = len1 && i = len2 then 0
+        else if i = len1 then -1
+        else if i = len2 then 1
+        else
+          let c = compare_value a1.(i) a2.(i) in
+          if c <> 0 then c
+          else compare_elements (i + 1)
+      in
+      compare_elements 0
+
+  | Vnone, _ -> -1
+  | _, Vnone -> 1
+  
+  | Vbool _, Vint _ | Vbool _, Vstring _ | Vbool _, Vlist _ -> -1
+  | Vint _, Vbool _ | Vstring _, Vbool _ | Vlist _, Vbool _ -> 1
+
+  | Vint _, Vstring _ | Vint _, Vlist _ -> -1
+  | Vstring _, Vint _ | Vlist _, Vint _ -> 1
+
+  | Vstring _, Vlist _ -> -1
+  | Vlist _, Vstring _ -> 1
+  
+  | _ ->
+    if v1 < v2 then -1 else 1
+
 (* We only have global functions in Mini-Python *)
 
 let functions = (Hashtbl.create 16 : (string, ident list * stmt) Hashtbl.t)
@@ -95,12 +134,14 @@ let rec expr (ctx: ctx) = function
         | Bmul, Vint n1, Vint n2 -> assert false (* to be completed (question 1) *)
         | Bdiv, Vint n1, Vint n2 -> assert false (* to be completed (question 1) *)
         | Bmod, Vint n1, Vint n2 -> assert false (* to be completed (question 1) *)
-        | Beq, _, _  -> assert false (* to be completed (question 2) *)
-        | Bneq, _, _ -> assert false (* to be completed (question 2) *)
-        | Blt, _, _  -> assert false (* to be completed (question 2) *)
-        | Ble, _, _  -> assert false (* to be completed (question 2) *)
-        | Bgt, _, _  -> assert false (* to be completed (question 2) *)
-        | Bge, _, _  -> assert false (* to be completed (question 2) *)
+        (* to be completed (question 2) *)
+        | Beq, _, _  -> Vbool (compare_value v1 v2 = 0)
+        | Bneq, _, _ -> Vbool (compare_value v1 v2 <> 0)
+        | Blt, _, _  -> Vbool (compare_value v1 v2 < 0)
+        | Ble, _, _  -> Vbool (compare_value v1 v2 <= 0)
+        | Bgt, _, _  -> Vbool (compare_value v1 v2 > 0)
+        | Bge, _, _  -> Vbool (compare_value v1 v2 >= 0)
+        (* to be completed (question 2) *)
         | Badd, Vstring s1, Vstring s2 ->
             assert false (* to be completed (question 3) *)
         | Badd, Vlist l1, Vlist l2 ->
