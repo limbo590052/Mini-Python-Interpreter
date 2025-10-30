@@ -1,0 +1,37 @@
+# Dune build directory
+/_build/
+
+# OCaml artifacts
+*.cmi
+*.cmo
+*.cma
+*.cmx
+*.cmxa
+*.cmxs
+*.cmt
+*.annot
+*.a
+*.o
+*.out
+*.log
+*.output
+
+# Executables and libraries
+*.byte
+*.native
+*.exe
+*.so
+*.dll
+
+# Merlin (OCaml Language Server Protocol)
+.merlin
+
+# Local OPAM switch (if created inside the project root)
+/_opam/
+
+# Editor/IDE temporary files
+*~
+\#*
+.\#*
+.DS_Store
+.vscode/

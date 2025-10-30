@@ -134,6 +134,7 @@ let rec expr (ctx: ctx) = function
         | Bmul, Vint n1, Vint n2 -> assert false (* to be completed (question 1) *)
         | Bdiv, Vint n1, Vint n2 -> assert false (* to be completed (question 1) *)
         | Bmod, Vint n1, Vint n2 -> assert false (* to be completed (question 1) *)
+
         (* to be completed (question 2) *)
         | Beq, _, _  -> Vbool (compare_value v1 v2 = 0)
         | Bneq, _, _ -> Vbool (compare_value v1 v2 <> 0)
@@ -142,6 +143,7 @@ let rec expr (ctx: ctx) = function
         | Bgt, _, _  -> Vbool (compare_value v1 v2 > 0)
         | Bge, _, _  -> Vbool (compare_value v1 v2 >= 0)
         (* to be completed (question 2) *)
+
         | Badd, Vstring s1, Vstring s2 ->
             assert false (* to be completed (question 3) *)
         | Badd, Vlist l1, Vlist l2 ->
