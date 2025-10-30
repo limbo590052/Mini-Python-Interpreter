@@ -45,9 +45,20 @@ let rec print_value = function
    False, and any other value to be True.
 *)
 
-let is_false (v: value) = assert false (* to be completed (question 2) *)
+(* let is_false (v: value) = assert false to be completed (question 2) *)
 
-let is_true (v: value) = assert false (* to be completed (question 2) *)
+(* let is_true (v: value) = assert false to be completed (question 2) *)
+
+let is_false (v: value) = 
+  match v with
+  | Vnone -> true
+  | Vbool false -> true
+  | Vint 0 -> true
+  | Vstring "" -> true
+  | Vlist a -> Array.length a = 0
+  | _ -> false
+
+let is_true (v: value) = not (is_false v)
 
 (* We only have global functions in Mini-Python *)
 
@@ -155,6 +166,3 @@ and block (ctx: ctx) = function
 let file ((dl: def list), (s: stmt)) =
   (* to be completed (question 4) *)
   stmt (Hashtbl.create 16) s
-
-
-
