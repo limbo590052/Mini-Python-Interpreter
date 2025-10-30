@@ -142,7 +142,11 @@ and stmt (ctx: ctx) = function
   | Sblock bl ->
       block ctx bl
   | Sif (e, s1, s2) ->
-      assert false (* to be completed (question 2) *)
+      (* assert false to be completed (question 2) *)
+        if is_true (expr ctx e) then
+            stmt ctx s1
+        else
+            stmt ctx s2
   | Sassign (id, e1) ->
       assert false (* to be completed (question 3) *)
   | Sreturn e ->
